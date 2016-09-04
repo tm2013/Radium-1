@@ -976,9 +976,9 @@ int64_t GetProofOfWorkReward(int64_t nFees)
     int64_t nSubsidy = 0 * COIN;
 	if(pindexBest->nHeight+1 >= 1 && pindexBest->nHeight+1 <= 20160)
     {
-		nSubsidy = 50 * COIN;  
-    } 
-	
+		nSubsidy = 50 * COIN;
+    }
+
 	if (fDebug && GetBoolArg("-printcreation", false))
     LogPrint("creation", "GetProofOfWorkReward() : create=%s nSubsidy=%d\n", FormatMoney(nSubsidy), nSubsidy);
 
@@ -988,15 +988,15 @@ int64_t GetProofOfWorkReward(int64_t nFees)
 // miner's coin stake reward
 int64_t GetProofOfStakeReward(const CBlockIndex* pindexPrev, int64_t nCoinAge, int64_t nFees)
 {
-	
+
     int64_t nSubsidy = 5 * COIN;
 	if(pindexPrev->nHeight+1 >= 0 && pindexPrev->nHeight+1 <= 2779)
     {
-		nSubsidy = 0 * COIN;  
-    }	
+		nSubsidy = 0 * COIN;
+    }
     else if(pindexPrev->nHeight+1 >= 2880 && pindexPrev->nHeight+1 <= 30240)
     {
-		nSubsidy = 25 * COIN;  
+		nSubsidy = 25 * COIN;
     }
     else if(pindexPrev->nHeight+1 >= 30241 && pindexPrev->nHeight+1 <= 337999)
     {
@@ -1025,7 +1025,7 @@ int64_t GetProofOfStakeReward(const CBlockIndex* pindexPrev, int64_t nCoinAge, i
     else if(pindexPrev->nHeight+1 >= 345200 && pindexPrev->nHeight+1 <= 346639)
     {
 		nSubsidy = 2 * COIN;  // 6th reward drop
-    }	
+    }
     else if(pindexPrev->nHeight+1 >= 346640 && pindexPrev->nHeight+1 <= 348079)
     {
 		nSubsidy = 1.5 * COIN;  // 7th reward drop
@@ -1036,18 +1036,18 @@ int64_t GetProofOfStakeReward(const CBlockIndex* pindexPrev, int64_t nCoinAge, i
     }
     else if(pindexPrev->nHeight+1 >= 874360 && pindexPrev->nHeight+1 <= 1133559)
     {
-                nSubsidy = 0.75 * COIN; // First reward drop 6 months from the average fee fork.
+    nSubsidy = 0.75 * COIN; // First reward drop 6 months from the average fee fork.
     }
     else if(pindexPrev->nHeight+1 >= 1133560 && pindexPrev->nHeight+1 <= 1392759)
     {
-                nSubsidy = 0.5 * COIN; // Second reward drop 12 months from the average fee fork.
+    nSubsidy = 0.5 * COIN; // Second reward drop 12 months from the average fee fork.
     }
     else if(pindexPrev->nHeight+1 >= 1392760)
     {
-                nSubsidy = 0.25 * COIN; // Third and final reward drop 18 months from the average fee fork.
+    nSubsidy = 0.25 * COIN; // Third and final reward drop 18 months from the average fee fork.
     }
-	
-	
+
+
     if (fDebug && GetBoolArg("-printcreation", false))
     LogPrint("creation", "GetProofOfStakeReward(): create=%s nCoinAge=%d\n", FormatMoney(nSubsidy), nCoinAge);
 
@@ -1060,20 +1060,20 @@ int64_t GetProofOfStakeReward(const CBlockIndex* pindexPrev, int64_t nCoinAge, i
     {
         avgHeight = AVG_FEE_START_BLOCK_TESTNET;
         avgHeightRevert  = AVG_FEE_START_BLOCK_TESTNET_REVERT;
-	avgHeightV2 = AVG_FEE_START_BLOCK_TESTNET_V2;
-    }else{
+	      avgHeightV2 = AVG_FEE_START_BLOCK_TESTNET_V2;
+    }
+    else
+    {
         avgHeight = AVG_FEE_START_BLOCK;
-	avgHeightRevert = AVG_FEE_START_BLOCK_REVERT;
+	      avgHeightRevert = AVG_FEE_START_BLOCK_REVERT;
         avgHeightV2 =  AVG_FEE_START_BLOCK_V2;
     }
-
-
 
 
    if(pindexPrev->nHeight+1 >= avgHeightV2)
     {
         int64_t nRFee;
-	
+
         nRFee=GetRunningFee(nFees, pindexPrev);
         return nSubsidy + nRFee;
     }
@@ -1084,7 +1084,7 @@ int64_t GetProofOfStakeReward(const CBlockIndex* pindexPrev, int64_t nCoinAge, i
     else if(pindexPrev->nHeight+1 >= avgHeight)
     {
         int64_t nRFee;
-	
+
         nRFee=GetRunningFee(nFees, pindexPrev);
         return nSubsidy + nRFee;
     }
@@ -1107,7 +1107,7 @@ int64_t GetRunningFee(int64_t nFees,  const CBlockIndex* pindexPrev){
     const CBlockIndex* pblockindexTmp = pindexPrev;
     LogPrintf("---------------------->Getting fee for block :%d Current best %d\n" , pindexPrev->nHeight+1 ,pblockindexTmp->nHeight );
 
-   
+
     LogPrintf("---------------------->Loop start block: %d\n",pblockindexTmp->nHeight );
     LogPrintf("---------------------->Loop start hash: %s\n",pblockindexTmp->phashBlock->ToString());
     while (pblockindexTmp->nHeight > startHeight-(AVG_FEE_SPAN-1)){
@@ -1144,7 +1144,7 @@ int64_t GetRunningFee(int64_t nFees,  const CBlockIndex* pindexPrev){
                 mapFeeCache[pblockindexTmp->phashBlock]=blockFee;
                 LogPrintf("---------------------->height=%d hash=%s Calculated New Fee:%d\n",pblockindexTmp->nHeight,pblockindexTmp->phashBlock->ToString(),(int)blockFee);
         }
-        nCumulatedFee+=blockFee;       
+        nCumulatedFee+=blockFee;
         if (!MoneyRange(nCumulatedFee)){
         nCumulatedFee=0;
         }
@@ -1980,7 +1980,7 @@ bool CBlock::SetBestChain(CTxDB& txdb, CBlockIndex* pindexNew)
 // ppcoin: total coin age spent in transaction, in the unit of coin-days.
 // Only those coins meeting minimum age requirement counts. As those
 // transactions not in main chain are not currently indexed so we
-// might not find out about their coin age. Older transactions are 
+// might not find out about their coin age. Older transactions are
 // guaranteed to be in main chain by sync-checkpoint. This rule is
 // introduced to help nodes establish a consistent view of the coin
 // age (trust score) of competing branches.
@@ -2210,7 +2210,7 @@ bool CBlock::AcceptBlock()
     //  untill block 123681, causing the dos code to prevent syncing.
     if (TestNet() && nHeight+1 >= AVG_FEE_START_BLOCK_TESTNET + 700 && nVersion < 8)
         return DoS(100, error("AcceptBlock() : reject too old nVersion (Avg fee) = %d", nVersion));
-    
+
     if (!TestNet() && nHeight+1 >= AVG_FEE_START_BLOCK && nVersion < 8)
         return DoS(100, error("AcceptBlock() : reject too old nVersion (Avg fee) = %d", nVersion));
 
@@ -2224,7 +2224,7 @@ bool CBlock::AcceptBlock()
 
     if (IsProofOfStake() && nHeight < MODIFIER_INTERVAL_SWITCH)
         return DoS(100, error("AcceptBlock() : reject proof-of-stake at height %d", nHeight));
-		
+
     // Check coinbase timestamp
     if (IsProofOfStake() && GetBlockTime() > FutureDrift((int64_t)vtx[0].nTime, nHeight))
         return DoS(50, error("AcceptBlock() : coinbase timestamp is too early"));
@@ -3473,8 +3473,8 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv, 
 
     // This asymmetric behavior for inbound and outbound connections was introduced
     // to prevent a fingerprinting attack: an attacker can send specific fake addresses
-    // to users' AddrMan and later request them by sending getaddr messages. 
-    // Making users (which are behind NAT and can only make outgoing connections) ignore 
+    // to users' AddrMan and later request them by sending getaddr messages.
+    // Making users (which are behind NAT and can only make outgoing connections) ignore
     // getaddr message mitigates the attack.
     else if ((strCommand == "getaddr") && (pfrom->fInbound))
     {
